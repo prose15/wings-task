@@ -74,9 +74,7 @@ function App() {
               })
             }}
           >
-            <Suspense fallback={<h1 className="fixed inset-0 grid place-items-center bg-black text-white">
-            Model is loading please wait for some time!
-          </h1>}>
+            <Suspense fallback={null}>
               <BikeScene progress={progress} coverRef={coverRef} />
             </Suspense>
           </Canvas>

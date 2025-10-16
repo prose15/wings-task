@@ -6,6 +6,8 @@ import { BikeModel } from './modal/BikeModal'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { BikeCoverModel } from './modal/BikeCover'
+import * as THREE from 'three'
+import { SuzukiBikeModel } from './modal/SuzukiBikeModel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -115,6 +117,15 @@ const BikeScene = ({ progress, coverRef }) => {
     const y = startY + (endY - startY) * percentage
     const z = startZ + (endZ - startZ) * percentage
 
+    let targetX = 0
+    let targetY = 0
+    let targetZ = 0
+
+    if (segmentIndex === 2) {
+      // Move right when scrolling forward, left when backward
+      targetX = THREE.MathUtils.lerp(0, 2, percentage) 
+    }
+
     gsap.to(bikeRef.current.rotation, {
       x,
       y,
@@ -123,9 +134,17 @@ const BikeScene = ({ progress, coverRef }) => {
       ease: "power2.out",
       overwrite: true,
     })
+
+    gsap.to(bikeRef.current.position, {
+      x: targetX,
+      y: targetY,
+      z: targetZ,
+      duration: 0.5,
+      ease: "power2.out",
+      overwrite: true,
+    })
   }, [progress])
 
-  // const showSparkles = progress < 0.05 || progress > 0.95
 
   return (
     <>

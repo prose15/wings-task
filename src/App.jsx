@@ -5,14 +5,15 @@ import { Suspense, useEffect, useRef, useState } from 'react'
 import { BikeModel } from './modal/BikeModal'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { BikeCoverModel } from './modal/BikeCover'
+import { CarCoverModel } from './modal/BikeCover'
 import * as THREE from 'three'
+import { CarModel } from './modal/CarModel'
 
 gsap.registerPlugin(ScrollTrigger)
 
 function App() {
   const mainRef = useRef(null)
-  const coverRef = useRef(null)
+  const carRef = useRef(null)
   const [progress, setProgress] = useState(0)
   const glRef = useRef(null)
 
@@ -20,10 +21,9 @@ function App() {
     let ctx
 
     const setupScroll = () => {
-      if (!coverRef.current) return // 👈 Don’t run until model exists
 
       ctx = gsap.context(() => {
-        const tl = gsap.timeline({
+        gsap.timeline({
           scrollTrigger: {
             trigger: mainRef.current,
             start: "top top",
@@ -32,17 +32,12 @@ function App() {
             onUpdate: (self) => setProgress(self.progress),
           },
         })
-        tl.to(coverRef.current.position, {
-          x: -10,
-          ease: "none",
-        })
       })
     }
 
     const interval = setInterval(() => {
-      if (coverRef.current) {
+      if (carRef.current) {
         setupScroll()
-        clearInterval(interval)
       }
     }, 100)
 
@@ -64,23 +59,24 @@ function App() {
       >
 
         <div className="fixed inset-0 z-0">
+          <h1 className='text-4xl text-amber-300 text-center font-bold mt-4'>Audi Car Model</h1>
           <Canvas
             dpr={[1, 1.5]}
             onCreated={({ gl }) => {
               glRef.current = gl
               gl.domElement.addEventListener("webglcontextlost", (e) => {
                 e.preventDefault()
-                console.warn("WebGL context lost, attempting to recover...")
               })
             }}
+            style={{marginTop: '-60px'}}
           >
             <Suspense fallback={null}>
-              <BikeScene progress={progress} coverRef={coverRef} />
+              <CarScene progress={progress} carRef={carRef} />
             </Suspense>
           </Canvas>
         </div>
 
-        <div className="relative h-[300vh] z-20 text-white">
+        <div className="relative h-[600vh] z-20">
 
         </div>
 
@@ -92,40 +88,31 @@ function App() {
 export default App
 
 
-const BikeScene = ({ progress, coverRef }) => {
-  const bikeRef = useRef()
+const CarScene = ({ progress, carRef }) => {
+  const coverRef = useRef()
 
   useEffect(() => {
-    if (!bikeRef.current) return
-
+    if (!carRef.current || !coverRef.current) return
+  
     const rotations = [
       [1.3, 1.5, 0],
       [0.7, 1.5, 0],
       [0.3, 1.5, 0],
       [0, 1.5, 0],
     ]
-
+  
     const segmentProgress = 1 / 3
     const segmentIndex = Math.min(Math.floor(progress / segmentProgress), rotations.length - 2)
     const percentage = (progress % segmentProgress) / segmentProgress
-
+  
     const [startX, startY, startZ] = rotations[segmentIndex]
     const [endX, endY, endZ] = rotations[segmentIndex + 1]
-
+  
     const x = startX + (endX - startX) * percentage
     const y = startY + (endY - startY) * percentage
     const z = startZ + (endZ - startZ) * percentage
-
-    let targetX = 0
-    let targetY = 0
-    let targetZ = 0
-
-    if (segmentIndex === 2) {
-      // Move right when scrolling forward, left when backward
-      targetX = THREE.MathUtils.lerp(0, 2, percentage) 
-    }
-
-    gsap.to(bikeRef.current.rotation, {
+  
+    gsap.to(carRef.current.rotation, {
       x,
       y,
       z,
@@ -133,26 +120,41 @@ const BikeScene = ({ progress, coverRef }) => {
       ease: "power2.out",
       overwrite: true,
     })
-
-    gsap.to(bikeRef.current.position, {
-      x: targetX,
-      y: targetY,
-      z: targetZ,
+  
+    gsap.to(coverRef.current.rotation, {
+      x,
+      y,
+      z,
       duration: 0.5,
       ease: "power2.out",
       overwrite: true,
     })
+  
+    if (progress > 0.55) {
+      const coverProgress = (progress - 0.55) / 0.45
+      gsap.to(coverRef.current.position, {
+        x: THREE.MathUtils.lerp(0, -10, coverProgress),
+        duration: 0.5,
+        ease: "power2.out",
+        overwrite: true,
+      })
+    }
+  
   }, [progress])
+  
 
 
   return (
     <>
       <PerspectiveCamera fov={45} near={.1} far={10000} makeDefault position={[0, 1, 10]} />
-      <Environment preset='city' dpr={[1, 1.5]} />
-      <ambientLight intensity={0.2} color={0xfcfcfc}/>
-      <spotLight intensity={100} position={[1,4,2]}/>
-      <BikeCoverModel ref={coverRef} position={[0, 0.8, 4]} rotation={[0, 2, 1]} scale={0.8}/>
-      <BikeModel ref={bikeRef} position={[0, 0, 0]} rotation={[1.3, 1.5, 0]} />
+      <Environment preset='forest' dpr={[1, 1.5]} />
+      <ambientLight intensity={0.2} color={0xfcfcfc} />
+      <spotLight intensity={100} position={[1, 4, 2]} />
+      <group>
+        <CarCoverModel ref={coverRef} position={[0, 0, 4]} rotation={[0, 1.3, 1.3]} scale={[0.8,1.12,0.98]} />
+        <CarModel ref={carRef} position={[-1.6, 0, 0]} rotation={[1.3, 1.5, 0]} /> 
+        
+      </group>
     </>
   )
 }

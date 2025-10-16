@@ -9,7 +9,7 @@ Title: Covered Car
 import React, { useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 
-export function BikeCoverModel(props) {
+export function CarCoverModel(props) {
   const { nodes, materials } = useGLTF('/model/covered_car.glb')
   return (
 <group {...props} dispose={null}>

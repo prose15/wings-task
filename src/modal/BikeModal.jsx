@@ -120,7 +120,7 @@ export function BikeModel(props) {
                         castShadow
                         receiveShadow
                         geometry={nodes.carpaint_body_front010_metal_frey_0.geometry}
-                        material={materials.metal_frey}
+                        // material={materials.metal_frey}
                         position={[-0.012, -0.551, 0.457]}
                         rotation={[0, 0, Math.PI]}
                         scale={0.001}
@@ -129,7 +129,7 @@ export function BikeModel(props) {
                         castShadow
                         receiveShadow
                         geometry={nodes.carpaint_body_front011_plasticOrange_0.geometry}
-                        material={materials.plasticOrange}
+                        // material={materials.plasticOrange}
                         position={[-0.002, 0.277, 0.617]}
                         rotation={[0, 0, Math.PI]}
                         scale={0.001}

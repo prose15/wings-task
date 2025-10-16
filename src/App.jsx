@@ -125,26 +125,16 @@ const BikeScene = ({ progress, coverRef }) => {
     })
   }, [progress])
 
-  const showSparkles = progress < 0.05 || progress > 0.95
+  // const showSparkles = progress < 0.05 || progress > 0.95
 
   return (
     <>
       <PerspectiveCamera fov={45} near={.1} far={10000} makeDefault position={[0, 1, 10]} />
       <Environment preset='city' dpr={[1, 1.5]} />
+      <ambientLight intensity={0.2} color={0xfcfcfc}/>
+      <spotLight intensity={100} position={[1,4,2]}/>
       <BikeCoverModel ref={coverRef} position={[0, 0.8, 4]} rotation={[0, 2, 1]} scale={0.8}/>
       <BikeModel ref={bikeRef} position={[0, 0, 0]} rotation={[1.3, 1.5, 0]} />
-      
-
-      {showSparkles && (
-        <Sparkles
-          count={50}
-          scale={5}
-          size={3}
-          speed={0.3}
-          color="#FFD700"
-          position={[0, 1, 5]}
-        />
-      )}
     </>
   )
 }

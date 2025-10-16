@@ -12,18 +12,27 @@ import { useGLTF } from '@react-three/drei'
 export function BikeCoverModel(props) {
   const { nodes, materials } = useGLTF('/model/covered_car.glb')
   return (
-    <group {...props} dispose={null}>
-      <group scale={0.01}>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodes.coveredCar__0.geometry}
-          material={materials['Scene_-_Root']}
-          rotation={[-Math.PI / 2, 0, 0]}
-          scale={100}
-        />
-      </group>
-    </group>
+<group {...props} dispose={null}>
+  <group scale={0.01}>
+    <mesh
+      castShadow
+      receiveShadow
+      geometry={nodes.coveredCar__0.geometry}
+      rotation={[-Math.PI / 2, 0, 0]}
+      scale={100}
+    >
+      <meshStandardMaterial
+        attach="material"
+        color="white"
+        transparent
+        opacity={0.7}
+        roughness={0.1}
+        metalness={0.3}
+      />
+    </mesh>
+  </group>
+</group>
+
   )
 }
 

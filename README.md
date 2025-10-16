@@ -1,16 +1,47 @@
-# React + Vite
+🚗 Car Scroll Animation — React Three Fiber + GSAP
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project creates an interactive 3D scroll-based animation using React Three Fiber, GSAP, and ScrollTrigger.
+As the user scrolls through the page, a 3D car model smoothly rotates, and later, a car cover slides off dynamically — simulating a reveal animation.
 
-Currently, two official plugins are available:
+🧩 Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+React — Component-based UI framework
 
-## React Compiler
+React Three Fiber (R3F) — React renderer for Three.js
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+@react-three/drei — Utility components and helpers for R3F
 
-## Expanding the ESLint configuration
+GSAP + ScrollTrigger — Timeline-based scroll animations
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+React Suspense — Lazy-loading fallback for 3D models
+
+🎯 Features Implemented
+1. Scroll-driven 3D Animation
+
+The page uses GSAP’s ScrollTrigger to map scroll progress (0 → 1) to 3D object animations.
+
+The scroll area is extended (height: 900vh) to allow enough movement room for the sequence.
+
+2. Car Rotation Sequence
+
+The car rotates through multiple predefined keyframes based on scroll progress.
+
+Smooth transitions between rotation states using GSAP easing.
+
+3. Cover Reveal Animation
+
+The car cover (a separate 3D model) stays aligned with the car initially.
+
+After the main rotation sequence (~500vh), the cover begins to slide off gradually during the remaining 400vh of scroll.
+
+4. Scene Lighting & Camera
+
+PerspectiveCamera used for realistic depth perception.
+
+Ambient and spot lights simulate realistic reflections.
+
+5. Model Loading with Suspense
+
+Both models (CarModel, CarCoverModel) are lazy-loaded inside Suspense for smoother UX.
+
+A fullscreen fallback loader is shown until the 3D assets are ready.

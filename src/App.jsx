@@ -2,7 +2,6 @@ import './App.css'
 import { Canvas } from "@react-three/fiber"
 import { Environment, PerspectiveCamera, Sparkles } from "@react-three/drei"
 import { Suspense, useEffect, useRef, useState } from 'react'
-import { BikeModel } from './modal/BikeModal'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { CarCoverModel } from './modal/BikeCover'
@@ -152,8 +151,7 @@ const CarScene = ({ progress, carRef }) => {
       <spotLight intensity={100} position={[1, 4, 2]} />
       <group>
         <CarCoverModel ref={coverRef} position={[0, 0, 4]} rotation={[0, 1.3, 1.3]} scale={[0.8,1.12,0.98]} />
-        <CarModel ref={carRef} position={[-1.6, 0, 0]} rotation={[1.3, 1.5, 0]} /> 
-        
+        <CarModel ref={carRef} position={[-1.6, 0, 0]} rotation={[1.3, 1.5, 0]} />      
       </group>
     </>
   )

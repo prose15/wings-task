@@ -7,7 +7,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { BikeCoverModel } from './modal/BikeCover'
 import * as THREE from 'three'
-import { SuzukiBikeModel } from './modal/SuzukiBikeModel'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -75,7 +74,9 @@ function App() {
               })
             }}
           >
-            <Suspense fallback={null}>
+            <Suspense fallback={<h1 className="fixed inset-0 grid place-items-center bg-black text-white">
+            Model is loading please wait for some time!
+          </h1>}>
               <BikeScene progress={progress} coverRef={coverRef} />
             </Suspense>
           </Canvas>

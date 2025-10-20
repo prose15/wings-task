@@ -102,14 +102,13 @@ const CarScene = ({ progress, carRef }) => {
   
     const segmentProgress = 1 / 3
     const segmentIndex = Math.min(Math.floor(progress / segmentProgress), rotations.length - 2)
-    const percentage = (progress % segmentProgress) / segmentProgress
   
     const [startX, startY, startZ] = rotations[segmentIndex]
     const [endX, endY, endZ] = rotations[segmentIndex + 1]
   
-    const x = startX + (endX - startX) * percentage
-    const y = startY + (endY - startY) * percentage
-    const z = startZ + (endZ - startZ) * percentage
+    const x = startX + (endX - startX) * progress
+    const y = startY + (endY - startY) * progress
+    const z = startZ + (endZ - startZ) * progress
   
     gsap.to(carRef.current.rotation, {
       x,
